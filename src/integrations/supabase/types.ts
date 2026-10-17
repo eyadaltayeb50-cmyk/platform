@@ -14,6 +14,32 @@ export type Database = {
   }
   public: {
     Tables: {
+      announcement_reads: {
+        Row: {
+          announcement_id: string
+          read_at: string
+          user_id: string
+        }
+        Insert: {
+          announcement_id: string
+          read_at?: string
+          user_id?: string
+        }
+        Update: {
+          announcement_id?: string
+          read_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcement_reads_announcement_id_fkey"
+            columns: ["announcement_id"]
+            isOneToOne: false
+            referencedRelation: "announcements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       announcements: {
         Row: {
           body: string
@@ -22,6 +48,8 @@ export type Database = {
           id: string
           pinned: boolean
           published_at: string
+          target_department_ids: string[]
+          target_levels: string[]
           title: string
         }
         Insert: {
@@ -31,6 +59,8 @@ export type Database = {
           id?: string
           pinned?: boolean
           published_at?: string
+          target_department_ids?: string[]
+          target_levels?: string[]
           title: string
         }
         Update: {
@@ -40,7 +70,36 @@ export type Database = {
           id?: string
           pinned?: boolean
           published_at?: string
+          target_department_ids?: string[]
+          target_levels?: string[]
           title?: string
+        }
+        Relationships: []
+      }
+      departments: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -54,6 +113,8 @@ export type Database = {
           notes: string | null
           starts_at: string
           subject_id: string | null
+          target_department_ids: string[]
+          target_levels: string[]
           title: string
         }
         Insert: {
@@ -65,6 +126,8 @@ export type Database = {
           notes?: string | null
           starts_at: string
           subject_id?: string | null
+          target_department_ids?: string[]
+          target_levels?: string[]
           title: string
         }
         Update: {
@@ -76,6 +139,8 @@ export type Database = {
           notes?: string | null
           starts_at?: string
           subject_id?: string | null
+          target_department_ids?: string[]
+          target_levels?: string[]
           title?: string
         }
         Relationships: [
@@ -84,6 +149,50 @@ export type Database = {
             columns: ["subject_id"]
             isOneToOne: false
             referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lecture_resources: {
+        Row: {
+          created_at: string
+          description: string | null
+          drive_file_id: string | null
+          id: string
+          lecture_id: string
+          name: string
+          resource_type: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          drive_file_id?: string | null
+          id?: string
+          lecture_id: string
+          name: string
+          resource_type?: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          drive_file_id?: string | null
+          id?: string
+          lecture_id?: string
+          name?: string
+          resource_type?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lecture_resources_lecture_id_fkey"
+            columns: ["lecture_id"]
+            isOneToOne: false
+            referencedRelation: "lectures"
             referencedColumns: ["id"]
           },
         ]
@@ -162,6 +271,8 @@ export type Database = {
           created_by: string | null
           id: string
           link: string | null
+          target_department_ids: string[]
+          target_levels: string[]
           title: string
           user_id: string | null
         }
@@ -171,6 +282,8 @@ export type Database = {
           created_by?: string | null
           id?: string
           link?: string | null
+          target_department_ids?: string[]
+          target_levels?: string[]
           title: string
           user_id?: string | null
         }
@@ -180,6 +293,8 @@ export type Database = {
           created_by?: string | null
           id?: string
           link?: string | null
+          target_department_ids?: string[]
+          target_levels?: string[]
           title?: string
           user_id?: string | null
         }
@@ -284,34 +399,49 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
+          department_id: string | null
           full_name: string
           id: string
           level: string | null
           phone: string
+          student_code: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
+          department_id?: string | null
           full_name?: string
           id: string
           level?: string | null
           phone?: string
+          student_code?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
+          department_id?: string | null
           full_name?: string
           id?: string
           level?: string | null
           phone?: string
+          student_code?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subjects: {
         Row: {
           code: string | null
           created_at: string
+          department_id: string | null
           description: string | null
           id: string
           level: string | null
@@ -322,6 +452,7 @@ export type Database = {
         Insert: {
           code?: string | null
           created_at?: string
+          department_id?: string | null
           description?: string | null
           id?: string
           level?: string | null
@@ -332,6 +463,7 @@ export type Database = {
         Update: {
           code?: string | null
           created_at?: string
+          department_id?: string | null
           description?: string | null
           id?: string
           level?: string | null
@@ -339,7 +471,15 @@ export type Database = {
           sort_order?: number
           term?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "subjects_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subscription_events: {
         Row: {
@@ -546,6 +686,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_access_subject: {
+        Args: { _subject_id: string; _user_id: string }
+        Returns: boolean
+      }
       effective_status: {
         Args: { _s: Database["public"]["Tables"]["subscriptions"]["Row"] }
         Returns: Database["public"]["Enums"]["subscription_status"]
@@ -559,6 +703,11 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      lecture_storage_subject: { Args: { _path: string }; Returns: string }
+      matches_content_target: {
+        Args: { _department_ids: string[]; _levels: string[]; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "owner" | "staff" | "student"
