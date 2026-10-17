@@ -1,0 +1,16 @@
+{
+  "source": "https://github.com/eyad7778/study2028.git",
+  "mode": "newer version of the existing Lovable Cloud application",
+  "capabilities": [
+    {"capability":"code","source":"GitHub checkout","outcome":"import","status":"pending","next_action":"merge changed application files"},
+    {"capability":"schema","source":"0003_departments_and_resources.sql","outcome":"migrate","status":"pending","next_action":"apply additive schema and audience policies"},
+    {"capability":"records","source":"existing project Cloud database","outcome":"preserve","status":"pending","next_action":"verify existing row counts after import"},
+    {"capability":"auth identities","source":"existing project Cloud auth","outcome":"preserve","status":"pending","next_action":"verify existing session and new signup trigger"},
+    {"capability":"authorization","source":"audience-aware database policies","outcome":"migrate","status":"pending","next_action":"verify department and year isolation"},
+    {"capability":"uploaded file bytes","source":"existing private Cloud storage","outcome":"preserve","status":"pending","next_action":"verify existing storage and resource reads"},
+    {"capability":"external providers and secrets","source":"existing Telegram connector","outcome":"preserve","status":"pending","next_action":"retain existing connector and settings without replacing credentials"},
+    {"capability":"public endpoints callbacks webhooks schedules","source":"existing Telegram webhook; no new callbacks or schedules detected","outcome":"preserve","status":"pending","next_action":"keep endpoint and registration unchanged"},
+    {"capability":"cutover","source":"current preview and published application","outcome":"preview import","status":"pending","next_action":"verify preview; publication remains user-controlled"},
+    {"capability":"verification","source":"tests and live UI","outcome":"test","status":"pending","next_action":"exercise departments, resources, signup and audience access"}
+  ]
+}
