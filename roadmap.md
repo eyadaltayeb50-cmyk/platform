@@ -6,3 +6,5 @@
 - [x] Phase 5: admin dashboard
 - [x] Phase 6: PWA installable (Web Push deferred)
 - [x] Phase 7: acceptance tests (all routes + admin announcement flow) + docs/دليل-الاستخدام.md
+- [ ] Import newer GitHub version: departments, student codes/years, resources, audience restrictions
+- [ ] Verify imported flows and preserve existing accounts, records, storage and Telegram configuration
